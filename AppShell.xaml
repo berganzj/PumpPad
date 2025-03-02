@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="PumpPad.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:PumpPad"
-    Shell.FlyoutBehavior="Disabled"
-    Title="PumpPad">
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:PumpPad"
+       x:Class="PumpPad.AppShell">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <Tab Title="New Workout">
+            <ShellContent ContentTemplate="{DataTemplate local:NewWorkoutPage}" />
+        </Tab>
+        <Tab Title="Review Workouts">
+            <ShellContent ContentTemplate="{DataTemplate local:ReviewWorkoutsPage}" />
+        </Tab>
+    </TabBar>
 
 </Shell>

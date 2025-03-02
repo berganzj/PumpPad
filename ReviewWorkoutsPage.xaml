@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PumpPad.ReviewWorkoutsPage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Text="Review Workouts Page" 
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center" 
+                   Grid.Row="0" 
+                   Grid.Column="0" />
+            <!-- Add your UI elements for reviewing workouts here -->
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
