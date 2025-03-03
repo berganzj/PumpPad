@@ -1,5 +1,6 @@
 using Microsoft.Maui.Controls;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PumpPad
 {
@@ -24,16 +25,16 @@ namespace PumpPad
                 var preset = WorkoutPreset.GetPresets().Find(p => p.Name == selectedWorkout);
                 if (preset != null)
                 {
-                    List<string> workoutDetails = new List<string>();
-                    for (int i = 0; i < preset.Exercises.Count; i++)
+                    var workoutDetails = preset.Exercises.Select(exercise => new
                     {
-                        workoutDetails.Add($"{preset.Exercises[i]}: {preset.Sets[i]} sets of {string.Join(", ", preset.Reps)} reps");
-                    }
+                        exercise.Name,
+                        exercise.Sets,
+                        Reps = string.Join(", ", exercise.Reps),
+                        exercise.Instruction
+                    }).ToList();
+
                     WorkoutDetailsListView.ItemsSource = workoutDetails;
                     WorkoutDetailsListView.IsVisible = true;
-
-                    InstructionLabel.Text = string.Join("\n", preset.Instructions);
-                    InstructionLabel.IsVisible = true;
                 }
             }
         }
@@ -57,3 +58,4 @@ namespace PumpPad
         }
     }
 }
+

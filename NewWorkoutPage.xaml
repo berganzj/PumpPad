@@ -13,6 +13,7 @@
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Chest Workout</x:String>
+                        <x:String>Tricep Workout</x:String>
                         <!-- Add more workout presets here -->
                     </x:Array>
                 </Picker.ItemsSource>
@@ -21,14 +22,16 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout>
-                                <Label Text="{Binding}" />
-                            </StackLayout>
+                            <Grid ColumnDefinitions="*,*,*,*">
+                                <Label Text="{Binding Name}" Grid.Column="0" />
+                                <Label Text="{Binding Sets}" Grid.Column="1" />
+                                <Label Text="{Binding Reps}" Grid.Column="2" />
+                                <Label Text="{Binding Instruction}" Grid.Column="3" />
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Label x:Name="InstructionLabel" IsVisible="False" />
             <Button Text="Start Workout" 
                     Clicked="OnStartWorkoutClicked" 
                     IsEnabled="{Binding IsWorkoutSelected}" />
