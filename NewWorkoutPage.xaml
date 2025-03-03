@@ -17,9 +17,22 @@
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
+            <ListView x:Name="WorkoutDetailsListView" IsVisible="False">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label x:Name="InstructionLabel" IsVisible="False" />
             <Button Text="Start Workout" 
                     Clicked="OnStartWorkoutClicked" 
                     IsEnabled="{Binding IsWorkoutSelected}" />
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
+

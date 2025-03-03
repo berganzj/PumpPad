@@ -1,4 +1,5 @@
 using Microsoft.Maui.Controls;
+using System.Collections.Generic;
 
 namespace PumpPad
 {
@@ -16,21 +17,43 @@ namespace PumpPad
         {
             IsWorkoutSelected = WorkoutPicker.SelectedIndex != -1;
             OnPropertyChanged(nameof(IsWorkoutSelected));
+
+            if (WorkoutPicker.SelectedItem != null)
+            {
+                string selectedWorkout = WorkoutPicker.SelectedItem?.ToString() ?? string.Empty;
+                var preset = WorkoutPreset.GetPresets().Find(p => p.Name == selectedWorkout);
+                if (preset != null)
+                {
+                    List<string> workoutDetails = new List<string>();
+                    for (int i = 0; i < preset.Exercises.Count; i++)
+                    {
+                        workoutDetails.Add($"{preset.Exercises[i]}: {preset.Sets[i]} sets of {string.Join(", ", preset.Reps)} reps");
+                    }
+                    WorkoutDetailsListView.ItemsSource = workoutDetails;
+                    WorkoutDetailsListView.IsVisible = true;
+
+                    InstructionLabel.Text = string.Join("\n", preset.Instructions);
+                    InstructionLabel.IsVisible = true;
+                }
+            }
         }
 
-        private void OnStartWorkoutClicked(object sender, EventArgs e)
+        private async void OnStartWorkoutClicked(object sender, EventArgs e)
         {
             if (WorkoutPicker.SelectedItem is not null)
             {
                 string selectedWorkout = WorkoutPicker.SelectedItem.ToString()!;
-                // Navigate to the workout details page or start the workout
-                DisplayAlert("Workout Selected", $"You selected: {selectedWorkout}", "OK");
+                var preset = WorkoutPreset.GetPresets().Find(p => p.Name == selectedWorkout);
+                if (preset != null)
+                {
+                    // Navigate to the workout details page
+                    await Navigation.PushAsync(new WorkoutDetailsPage(preset));
+                }
             }
             else
             {
-                DisplayAlert("Error", "No workout selected", "OK");
+                await DisplayAlert("Error", "No workout selected", "OK");
             }
         }
     }
 }
-

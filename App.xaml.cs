@@ -1,4 +1,6 @@
-﻿namespace PumpPad
+﻿using Microsoft.Maui.Controls;
+
+namespace PumpPad
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new NavigationPage(new WelcomePage());
         }
     }
 }
