@@ -4,8 +4,8 @@ namespace PumpPad
 {
     public class WorkoutPreset
     {
-        public string Name { get; set; }
-        public List<Exercise> Exercises { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public List<Exercise> Exercises { get; set; } = new List<Exercise>();
 
         public static List<WorkoutPreset> GetPresets()
         {
@@ -29,7 +29,7 @@ namespace PumpPad
                     {
                         new Exercise("French Press", 4, new List<int> { 12, 12, 10, 8 }, "Pyramid up in weight"),
                         new Exercise("DB Kickback", 2, new List<int> { 15, 15}, "Same weight"),
-                        new Exercise("Reverse Grip Pull Down", 2, new List<int> { 15, 15}, "Same weight"),                        
+                        new Exercise("Reverse Grip Pull Down", 2, new List<int> { 15, 15}, "Same weight"),
                     }
                 }
                 // Add more presets here if needed
@@ -37,3 +37,4 @@ namespace PumpPad
         }
     }
 }
+
