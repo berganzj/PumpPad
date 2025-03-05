@@ -4,8 +4,8 @@ namespace PumpPad
 {
     public class WorkoutPreset
     {
-        public string Name { get; set; } = string.Empty;
-        public List<Exercise> Exercises { get; set; } = new List<Exercise>();
+        public string Name { get; set; } = string.Empty; // Initialize with default value
+        public List<Exercise> Exercises { get; set; } = new List<Exercise>(); // Initialize with default value
 
         public static List<WorkoutPreset> GetPresets()
         {

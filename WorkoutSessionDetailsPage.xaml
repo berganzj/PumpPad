@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PumpPad.WorkoutDetailsPage">
+             x:Class="PumpPad.WorkoutSessionDetailsPage">
     <ContentPage.Content>
         <VerticalStackLayout Padding="10">
             <ScrollView>
@@ -9,7 +9,6 @@
                     <!-- Grid content will be populated in the code-behind -->
                 </Grid>
             </ScrollView>
-            <Button Text="Save Workout" Clicked="OnSaveWorkoutClicked" />
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -3,19 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PumpPad.ReviewWorkoutsPage">
     <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Label Text="Review Workouts Page" 
-                   VerticalOptions="Center" 
-                   HorizontalOptions="Center" 
-                   Grid.Row="0" 
-                   Grid.Column="0" />
-            <!-- Add your UI elements for reviewing workouts here -->
-        </Grid>
+        <StackLayout>
+            <Button Text="Sort by Workout Preset Name" Clicked="OnSortByWorkoutPresetNameClicked" />
+            <Button Text="Sort by Date" Clicked="OnSortByDateClicked" />
+            <ListView x:Name="WorkoutsListView" ItemSelected="OnWorkoutSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding WorkoutPresetName}" />
+                                <Label Text="{Binding Timestamp, StringFormat='{0:MM/dd/yyyy}'}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
