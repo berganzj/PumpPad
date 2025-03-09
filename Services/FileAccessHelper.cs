@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace PumpPad
+namespace PumpPad.Services
 {
     public static class FileAccessHelper
     {

@@ -1,3 +1,6 @@
+using PumpPad.Models;
+using PumpPad.Services;
+
 namespace PumpPad;
 
 public partial class ReviewWorkoutsPage : ContentPage
@@ -14,8 +17,15 @@ public partial class ReviewWorkoutsPage : ContentPage
 
     private async void LoadWorkoutSessions()
     {
-        _workoutSessions = await _databaseService.GetWorkoutSessionsAsync();
-        WorkoutsListView.ItemsSource = _workoutSessions;
+        try
+        {
+            _workoutSessions = await _databaseService.GetWorkoutSessionsAsync();
+            WorkoutsListView.ItemsSource = _workoutSessions;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading workout sessions: {ex.Message}");
+        }
     }
 
     private void OnSortByWorkoutPresetNameClicked(object sender, EventArgs e)
@@ -34,7 +44,13 @@ public partial class ReviewWorkoutsPage : ContentPage
     {
         if (e.SelectedItem is WorkoutSession selectedWorkoutSession)
         {
-            await Navigation.PushAsync(new WorkoutSessionDetailsPage(selectedWorkoutSession.Id));
+            await Navigation.PushAsync(new WorkoutSessionDetailsPage(selectedWorkoutSession.Id, isReadOnly: true));
         }
+    }
+
+    private async void OnClearWorkoutHistoryClicked(object sender, EventArgs e)
+    {
+        await _databaseService.ClearWorkoutHistoryAsync();
+        LoadWorkoutSessions();
     }
 }

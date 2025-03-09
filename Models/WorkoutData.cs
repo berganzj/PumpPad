@@ -1,14 +1,17 @@
 using SQLite;
+using System;
 
-namespace PumpPad
+namespace PumpPad.Models
 {
-    public class WorkoutExercise
+    public class WorkoutData
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        public int WorkoutSessionId { get; set; } // Foreign key to WorkoutSession
         public string ExerciseName { get; set; } = string.Empty; // Initialize with default value
+        public string WorkoutPresetName { get; set; } = string.Empty; // Initialize with default value
         public int Sets { get; set; }
         public int Reps { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }
+

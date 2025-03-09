@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace PumpPad;
+namespace PumpPad.Services;
 
 public static class MauiProgram
 {

@@ -1,7 +1,7 @@
 using SQLite;
 using System;
 
-namespace PumpPad
+namespace PumpPad.Models
 {
     public class WorkoutSession
     {

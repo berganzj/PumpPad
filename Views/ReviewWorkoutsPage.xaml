@@ -6,6 +6,7 @@
         <StackLayout>
             <Button Text="Sort by Workout Preset Name" Clicked="OnSortByWorkoutPresetNameClicked" />
             <Button Text="Sort by Date" Clicked="OnSortByDateClicked" />
+            <Button Text="Clear Workout History" Clicked="OnClearWorkoutHistoryClicked" />
             <ListView x:Name="WorkoutsListView" ItemSelected="OnWorkoutSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
