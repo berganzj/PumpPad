@@ -98,7 +98,7 @@ namespace PumpPad
                 var exerciseName = exerciseLabel.Text;
                 var sets = (WorkoutGrid.ColumnDefinitions.Count - 1) / 2;
 
-                var workoutExercise = new WorkoutExercise // Remove the namespace
+                var workoutExercise = new WorkoutExercise
                 {
                     WorkoutSessionId = workoutSession.Id,
                     ExerciseName = exerciseName

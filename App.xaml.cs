@@ -7,8 +7,7 @@ namespace PumpPad
         public App()
         {
             InitializeComponent();
-
-            MainPage = new NavigationPage(new WelcomePage());
+            MainPage = new AppShell();
         }
     }
 }

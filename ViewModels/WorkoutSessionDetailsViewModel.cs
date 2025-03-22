@@ -22,6 +22,7 @@ namespace PumpPad.ViewModels
             _databaseService = databaseService;
             WorkoutExercises = new ObservableCollection<WorkoutExercise>();
             LoadWorkoutExercisesCommand = new Command(async () => await LoadWorkoutExercises());
+            LoadWorkoutExercisesCommand.Execute(null); // Ensure data is loaded on initialization
         }
 
         public ICommand LoadWorkoutExercisesCommand { get; }

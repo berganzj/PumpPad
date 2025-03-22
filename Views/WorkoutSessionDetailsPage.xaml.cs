@@ -22,24 +22,60 @@ namespace PumpPad
 
         private async void LoadWorkoutSessionDetails()
         {
-            // Load session details from the database
             var sessionDetails = await _databaseService.GetWorkoutSessionsAsync();
             var sessionDetail = sessionDetails.FirstOrDefault(s => s.Id == _sessionId);
-            // Populate UI with session details
+
+            if (sessionDetail != null)
+            {
+                var workoutExercises = await _databaseService.GetWorkoutExercisesAsync(_sessionId);
+                PopulateGrid(workoutExercises);
+            }
         }
 
-        private async void OnSaveWorkoutClicked(object sender, EventArgs e)
+        private void PopulateGrid(List<WorkoutExercise> workoutExercises)
         {
-            // Save workout session details
-            await _databaseService.SaveWorkoutSessionAsync(new WorkoutSession { Id = _sessionId, /* other details */ });
-            await DisplayAlert("Success", "Workout session saved successfully!", "OK");
-        }
+            WorkoutGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            for (int i = 0; i < workoutExercises.Max(e => e.WorkoutSets.Count); i++)
+            {
+                WorkoutGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                WorkoutGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            }
 
-        private async void OnDeleteWorkoutClicked(object sender, EventArgs e)
-        {
-            // Delete workout session
-            await _databaseService.DeleteWorkoutSessionAsync(_sessionId);
-            await DisplayAlert("Success", "Workout session deleted successfully!", "OK");
+            WorkoutGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            var exerciseLabel = new Label { Text = "Exercise" };
+            WorkoutGrid.Children.Add(exerciseLabel);
+            Grid.SetRow(exerciseLabel, 0);
+            Grid.SetColumn(exerciseLabel, 0);
+
+            for (int i = 0; i < workoutExercises.Max(e => e.WorkoutSets.Count); i++)
+            {
+                var setLabel = new Label { Text = $"Set {i + 1}" };
+                WorkoutGrid.Children.Add(setLabel);
+                Grid.SetRow(setLabel, 0);
+                Grid.SetColumn(setLabel, i * 2 + 1);
+            }
+
+            for (int i = 0; i < workoutExercises.Count; i++)
+            {
+                WorkoutGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                var exerciseNameLabel = new Label { Text = workoutExercises[i].ExerciseName };
+                WorkoutGrid.Children.Add(exerciseNameLabel);
+                Grid.SetRow(exerciseNameLabel, i + 1);
+                Grid.SetColumn(exerciseNameLabel, 0);
+
+                for (int j = 0; j < workoutExercises[i].WorkoutSets.Count; j++)
+                {
+                    var setEntry = new Entry { Text = workoutExercises[i].WorkoutSets[j].Weight, IsReadOnly = _isReadOnly };
+                    WorkoutGrid.Children.Add(setEntry);
+                    Grid.SetRow(setEntry, i + 1);
+                    Grid.SetColumn(setEntry, j * 2 + 1);
+
+                    var repsEntry = new Entry { Text = workoutExercises[i].WorkoutSets[j].Reps.ToString(), IsReadOnly = _isReadOnly };
+                    WorkoutGrid.Children.Add(repsEntry);
+                    Grid.SetRow(repsEntry, i + 1);
+                    Grid.SetColumn(repsEntry, j * 2 + 2);
+                }
+            }
         }
     }
 }

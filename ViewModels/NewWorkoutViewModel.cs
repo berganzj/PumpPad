@@ -24,6 +24,7 @@ namespace PumpPad.ViewModels
         public NewWorkoutViewModel()
         {
             WorkoutPresets = new ObservableCollection<WorkoutPreset>(WorkoutPreset.GetPresets());
+            _selectedWorkoutPreset = WorkoutPresets.FirstOrDefault(); // Initialize _selectedWorkoutPreset
         }
 
         private void OnWorkoutSelected()

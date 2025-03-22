@@ -32,9 +32,20 @@ namespace PumpPad.Services
             return _database.InsertAsync(set);
         }
 
-        public Task<List<WorkoutExercise>> GetWorkoutExercisesAsync(int workoutSessionId)
+        public async Task<List<WorkoutExercise>> GetWorkoutExercisesAsync(int workoutSessionId)
         {
-            return _database.Table<WorkoutExercise>().Where(e => e.WorkoutSessionId == workoutSessionId).ToListAsync();
+            var workoutExercises = await _database.Table<WorkoutExercise>()
+                                                   .Where(e => e.WorkoutSessionId == workoutSessionId)
+                                                   .ToListAsync();
+
+            foreach (var exercise in workoutExercises)
+            {
+                exercise.WorkoutSets = await _database.Table<WorkoutSet>()
+                                                      .Where(s => s.WorkoutExerciseId == exercise.Id)
+                                                      .ToListAsync();
+            }
+
+            return workoutExercises;
         }
 
         public Task<List<WorkoutSession>> GetWorkoutSessionsAsync()
