@@ -64,11 +64,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\WorkoutDetailsPage.xaml.cs">
-	    <DependentUpon>WorkoutDetailsPage.xaml</DependentUpon>
+	  <Compile Update="Views\InputWorkoutDetailsPage.xaml.cs">
+	    <DependentUpon>InputWorkoutDetailsPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\WorkoutSessionDetailsPage.xaml.cs">
-	    <DependentUpon>WorkoutSessionDetailsPage.xaml</DependentUpon>
+	  <Compile Update="Views\ViewWorkoutDetailsPage.xaml.cs">
+	    <DependentUpon>ViewWorkoutDetailsPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -79,13 +79,10 @@
 	  <MauiXaml Update="Views\ReviewWorkoutsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\WelcomePage.xaml">
+	  <MauiXaml Update="Views\InputWorkoutDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\WorkoutDetailsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\WorkoutSessionDetailsPage.xaml">
+	  <MauiXaml Update="Views\ViewWorkoutDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

@@ -5,13 +5,13 @@ using PumpPad.Services;
 
 namespace PumpPad
 {
-    public partial class WorkoutSessionDetailsPage : ContentPage
+    public partial class ViewWorkoutDetailsPage : ContentPage
     {
         private readonly DatabaseService _databaseService;
         private readonly int _sessionId;
         private readonly bool _isReadOnly;
 
-        public WorkoutSessionDetailsPage(int sessionId, bool isReadOnly)
+        public ViewWorkoutDetailsPage(int sessionId, bool isReadOnly)
         {
             InitializeComponent();
             _sessionId = sessionId;
@@ -27,6 +27,11 @@ namespace PumpPad
 
             if (sessionDetail != null)
             {
+                // Set the workout note
+                WorkoutNoteLabel.Text = string.IsNullOrEmpty(sessionDetail.Note)
+                    ? "No notes available for this workout."
+                    : sessionDetail.Note;
+
                 var workoutExercises = await _databaseService.GetWorkoutExercisesAsync(_sessionId);
                 PopulateGrid(workoutExercises);
             }

@@ -49,7 +49,7 @@ namespace PumpPad
                 if (preset != null)
                 {
                     // Navigate to the workout details page
-                    await Navigation.PushAsync(new WorkoutDetailsPage(preset));
+                    await Navigation.PushAsync(new InputWorkoutDetailsPage(preset));
                 }
             }
             else

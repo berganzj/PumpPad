@@ -44,7 +44,7 @@ public partial class ReviewWorkoutsPage : ContentPage
     {
         if (e.SelectedItem is WorkoutSession selectedWorkoutSession)
         {
-            await Navigation.PushAsync(new WorkoutSessionDetailsPage(selectedWorkoutSession.Id, isReadOnly: true));
+            await Navigation.PushAsync(new ViewWorkoutDetailsPage(selectedWorkoutSession.Id, isReadOnly: true));
         }
     }
 
