@@ -1,2 +1,15 @@
+name: List iOS SDKs
 
-xcodebuild -showsdks
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  list-ios-sdks:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: List Available iOS SDKs
+      run: xcodebuild -showsdks
