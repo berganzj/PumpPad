@@ -1,5 +1,0 @@
-- name: Check Xcode Version
-  run: xcodebuild -version
-
-- name: Check Available iOS SDKs
-  run: xcodebuild -showsdks
