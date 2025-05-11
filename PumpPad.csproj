@@ -22,7 +22,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>Pump Pad</ApplicationTitle>
+		<ApplicationTitle>PumpPad</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>7SLW466P76.com.pumppad.workouttracker</ApplicationId>
