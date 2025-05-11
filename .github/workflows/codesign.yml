@@ -1,0 +1,59 @@
+name: Test Code Signing
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  test-code-signing:
+    runs-on: macos-15
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Decode and Install Apple Certificate
+      env:
+        APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+        APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      run: |
+        echo "$APPLE_CERTIFICATE" | base64 --decode > certificate.p12
+        security import certificate.p12 -P "$APPLE_CERTIFICATE_PASSWORD" -A
+
+    - name: Decode and Install Provisioning Profile
+      env:
+        APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+      run: |
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+
+    - name: List Installed Certificates
+      run: |
+        echo "Listing installed certificates..."
+        security find-identity -v -p codesigning
+
+    - name: Create Placeholder App Bundle (if needed)
+      run: |
+        mkdir -p bin/Release/net8.0-ios/ios-arm64/PumpPad.app
+        echo "Placeholder app bundle created."
+
+    - name: Inspect Entitlement File
+      run: |
+        echo "Inspecting Entitlements.xcent file..."
+        cat obj/Release/net8.0-ios/ios-arm64/Entitlements.xcent || echo "Entitlements file not found."
+
+    - name: Manually Test Code Signing
+      run: |
+        echo "Manually testing code signing with verbosity enabled..."
+        codesign -v --force --timestamp=none --sign "AC6525929CDC86AE7045B333DED51948C715F6B9" \
+        --entitlements obj/Release/net8.0-ios/ios-arm64/Entitlements.xcent \
+        bin/Release/net8.0-ios/ios-arm64/PumpPad.app
+
+    - name: Validate Code Signing
+      run: |
+        echo "Validating code signing..."
+        codesign -d --verbose=4 bin/Release/net8.0-ios/ios-arm64/PumpPad.app
