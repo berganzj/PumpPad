@@ -5,7 +5,7 @@ on:
 
 jobs:
   check-xcode-version:
-    runs-on: macos-13
+    runs-on: macos-14
 
     steps:
     - name: Checkout code
