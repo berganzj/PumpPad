@@ -1,0 +1,30 @@
+name: Debug Provisioning Profile
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  debug-provisioning-profile:
+    runs-on: macos-15
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Decode and Debug Provisioning Profile
+      env:
+        APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+      run: |
+        # Decode the Base64-encoded provisioning profile
+        echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > profile.mobileprovision
+
+        # Check if the provisioning profile is valid
+        echo "Provisioning Profile Decoded Successfully"
+
+        # Use plutil to parse the provisioning profile and output its contents
+        echo "Parsing Provisioning Profile..."
+        plutil -p profile.mobileprovision || cat profile.mobileprovision
+
+        # Display the provisioning profile's raw content for further inspection
+        echo "Raw Provisioning Profile Content:"
+        cat profile.mobileprovision
