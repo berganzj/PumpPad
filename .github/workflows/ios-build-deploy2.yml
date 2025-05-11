@@ -39,6 +39,9 @@ jobs:
         echo "Listing installed certificates..."
         security find-identity -v -p codesigning
 
+    - name: Clean Build Artifacts
+      run: dotnet clean PumpPad.csproj -c Release
+
     - name: Build iOS App
       run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release --verbosity detailed
 
