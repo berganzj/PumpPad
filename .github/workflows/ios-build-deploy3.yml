@@ -51,6 +51,12 @@ jobs:
     - name: Clean Build Artifacts
       run: dotnet clean PumpPad.csproj -c Release
 
+    - name: Enable Debug Logging
+      run: |
+        export DOTNET_CLI_TELEMETRY_OPTOUT=1
+        export DOTNET_CLI_CONTEXT_VERBOSE=1
+        export MSBUILDDEBUGPATH=1
+
     - name: Build iOS App
       run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release /p:CodesignEntitlements=Platforms/iOS/Entitlements.plist --verbosity detailed
 
