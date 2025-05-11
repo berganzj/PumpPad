@@ -1,0 +1,39 @@
+name: Debug Provisioning Profile 2
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  debug-provisioning-profile:
+    runs-on: macos-15
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Decode and Inspect Provisioning Profile
+      env:
+        APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+      run: |
+        # Decode the Base64-encoded provisioning profile
+        echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > profile.mobileprovision
+        echo "Provisioning Profile Decoded Successfully"
+
+        # Parse the provisioning profile and output its contents
+        echo "Parsing Provisioning Profile..."
+        security cms -D -i profile.mobileprovision > profile.xml
+        echo "Provisioning Profile Parsed Successfully"
+
+        # Display the raw XML content of the provisioning profile
+        echo "Raw Provisioning Profile Content:"
+        cat profile.xml
+
+    - name: Inspect Entitlements Section
+      run: |
+        echo "Inspecting Entitlements Section..."
+        grep -A 10 "<key>Entitlements</key>" profile.xml || echo "Entitlements section not found."
+
+    - name: Validate Provisioning Profile
+      run: |
+        echo "Validating Provisioning Profile..."
+        plutil -lint profile.xml || echo "Provisioning profile validation failed."
