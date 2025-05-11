@@ -40,7 +40,7 @@ jobs:
         security find-identity -v -p codesigning
 
     - name: Build iOS App
-      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release
+      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release --verbosity detailed
 
     - name: Inspect Entitlement File
       run: |
