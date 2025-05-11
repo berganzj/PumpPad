@@ -26,6 +26,7 @@ jobs:
       run: |
         echo "$APPLE_CERTIFICATE" | base64 --decode > certificate.p12
         security import certificate.p12 -P "$APPLE_CERTIFICATE_PASSWORD" -A
+        security set-key-partition-list -S apple-tool:,apple: -s -k "$APPLE_CERTIFICATE_PASSWORD" login.keychain
 
     - name: Decode and Install Provisioning Profile
       env:
@@ -39,6 +40,11 @@ jobs:
         echo "Listing installed certificates..."
         security find-identity -v -p codesigning
 
+    - name: Verify Signing Certificate
+      run: |
+        echo "Verifying signing certificate..."
+        security find-certificate -c "Apple Development" -p | openssl x509 -noout -subject -issuer -dates
+
     - name: Build iOS App
       run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release --verbosity detailed
 
@@ -46,6 +52,11 @@ jobs:
       run: |
         echo "Inspecting Entitlements.xcent file..."
         cat obj/Release/net8.0-ios/ios-arm64/Entitlements.xcent || echo "Entitlements file not found."
+
+    - name: Validate Entitlements File
+      run: |
+        echo "Validating entitlements file..."
+        codesign -d --entitlements :- bin/Release/net8.0-ios/ios-arm64/PumpPad.app
 
     - name: Deploy to TestFlight
       env:
