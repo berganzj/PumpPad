@@ -34,8 +34,18 @@ jobs:
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
         echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
 
+    - name: List Installed Certificates
+      run: |
+        echo "Listing installed certificates..."
+        security find-identity -v -p codesigning
+
     - name: Build iOS App
-      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Debug
+      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release
+
+    - name: Inspect Entitlement File
+      run: |
+        echo "Inspecting Entitlements.xcent file..."
+        cat obj/Release/net8.0-ios/ios-arm64/Entitlements.xcent || echo "Entitlements file not found."
 
     - name: Deploy to TestFlight
       env:
