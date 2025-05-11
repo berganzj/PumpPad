@@ -38,6 +38,15 @@ jobs:
       run: |
         echo "Listing installed certificates..."
         security find-identity -v -p codesigning
+    
+    - name: Verify Entitlements File
+      run: |
+        if [ -f Platforms/iOS/Entitlements.plist ]; then
+          echo "Entitlements.plist file found."
+        else
+          echo "Entitlements.plist file is missing."
+          exit 1
+        fi
 
     - name: Clean Build Artifacts
       run: dotnet clean PumpPad.csproj -c Release
