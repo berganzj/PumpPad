@@ -1,4 +1,4 @@
-name: Build and Verify Entitlements.xcent Without Codesigning
+name: Codesign output review audit
 
 on:
   workflow_dispatch: # Allows manual triggering of the workflow
