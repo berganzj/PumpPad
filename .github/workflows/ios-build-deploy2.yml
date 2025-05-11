@@ -35,7 +35,7 @@ jobs:
         echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
 
     - name: Build iOS App
-      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release
+      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Debug
 
     - name: Deploy to TestFlight
       env:
