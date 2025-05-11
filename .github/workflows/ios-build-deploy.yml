@@ -35,7 +35,7 @@ jobs:
         echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
 
     - name: Build iOS App
-      run: dotnet publish -f net8.0-ios -c Release -o output
+      run: dotnet publish -f net8.0-ios -c Release --verbosity detailed
 
     - name: Deploy to TestFlight
       env:
