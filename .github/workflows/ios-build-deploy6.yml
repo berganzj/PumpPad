@@ -1,0 +1,89 @@
+name: Build and Deploy iOS App with Standardized Code Signing
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  build-and-deploy:
+    runs-on: macos-15
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install MAUI Workloads
+      run: dotnet workload install maui-ios
+
+    - name: Import Code Signing Certificates
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+        p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        mobileprovision-base64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+
+    - name: Decode and Install Provisioning Profile
+      env:
+        APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+      run: |
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+
+    - name: List Installed Certificates
+      run: |
+        echo "Listing installed certificates..."
+        security find-identity -v -p codesigning
+
+    - name: Verify Entitlements File
+      run: |
+        if [ -f Platforms/iOS/Entitlements.plist ]; then
+          echo "Entitlements.plist file found."
+        else
+          echo "Entitlements.plist file is missing."
+          exit 1
+        fi
+
+    - name: Clean Build Artifacts
+      run: dotnet clean PumpPad.csproj -c Release
+
+    - name: Enable Debug Logging
+      run: |
+        export DOTNET_CLI_TELEMETRY_OPTOUT=1
+        export DOTNET_CLI_CONTEXT_VERBOSE=1
+        export MSBUILDDEBUGPATH=1
+
+    - name: Build iOS App
+      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release /p:CodesignEntitlements=Platforms/iOS/Entitlements.plist --verbosity detailed
+
+    - name: Inspect Entitlement File
+      run: |
+        echo "Inspecting Entitlements.xcent file..."
+        cat obj/Release/net8.0-ios/ios-arm64/Entitlements.xcent || echo "Entitlements file not found."
+    
+    - name: List Build Directory
+      run: |
+        echo "Listing contents of build directory..."
+        ls -R bin/Release/net8.0-ios/ios-arm64/
+
+    - name: Decode AuthKey.p8
+      env:
+        APPLE_API_PRIVATE_KEY: ${{ secrets.APPLE_API_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.appstoreconnect/private_keys
+        echo "$APPLE_API_PRIVATE_KEY" | base64 --decode > ~/.appstoreconnect/private_keys/AuthKey.p8
+
+    - name: Deploy to TestFlight
+      env:
+        APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+        APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
+      run: |
+        xcrun altool --upload-app -f bin/Release/net8.0-ios/ios-arm64/PumpPad.ipa \
+          --type ios \
+          --apiKey "$APPLE_API_KEY_ID" \
+          --apiIssuer "$APPLE_API_ISSUER_ID" \
+          --verbose
+     
