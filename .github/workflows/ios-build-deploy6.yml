@@ -57,7 +57,7 @@ jobs:
         export MSBUILDDEBUGPATH=1
 
     - name: Build iOS App
-      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release /p:CodesignEntitlements=Platforms/iOS/Entitlements.plist --verbosity detailed
+      run: dotnet publish PumpPad.csproj -f net8.0-ios -c Release -p:RuntimeIdentifier=ios-arm64 -p:ArchiveOnBuild=true /p:CodesignEntitlements=Platforms/iOS/Entitlements.plist --verbosity detailed
 
     - name: Inspect Entitlement File
       run: |
