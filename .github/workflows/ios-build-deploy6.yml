@@ -1,4 +1,4 @@
-name: Build and Deploy iOS App with Standardized Code Signing
+name: Build and Deploy iOS App with Standardized Code Signing and Flight handling
 
 on:
   workflow_dispatch: # Allows manual triggering of the workflow
