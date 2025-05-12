@@ -26,6 +26,13 @@ jobs:
         p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         mobileprovision-base64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
 
+    - name: Decode and Install Provisioning Profile
+      env:
+        APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+      run: |
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+
     - name: List Installed Certificates
       run: |
         echo "Listing installed certificates..."
