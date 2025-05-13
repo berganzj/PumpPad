@@ -26,6 +26,13 @@ jobs:
         p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         mobileprovision-base64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
 
+    - name: Import Code Signing Distribution Certificates 
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        p12-file-base64: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE }}
+        p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        mobileprovision-base64: ${{ secrets.APPLE_DISTRIBUTION_PROFILE }}
+
     - name: Decode and Install Provisioning Profile
       env:
         APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
