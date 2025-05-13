@@ -29,9 +29,11 @@ jobs:
     - name: Decode and Install Provisioning Profile
       env:
         APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+        APPLE_DISTRIBUTION_PROFILE: ${{ secrets.APPLE_DISTRIBUTION_PROFILE }}
       run: |
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
         echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+        echo "$APPLE_DISTRIBUTION_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile2.mobileprovision
 
     - name: List Installed Certificates
       run: |
