@@ -1,0 +1,53 @@
+name: Review iOS Code Signing Thumbprints
+
+on:
+  workflow_dispatch:
+
+jobs:
+  review-signing:
+    runs-on: macos-15
+
+    steps:
+
+    - name: Import Code Signing Certificates
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        p12-file-base64: ${{ secrets.APPLE_MERGED_CERTIFICATE }}
+        p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        mobileprovision-base64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+
+    - name: Decode and Install Provisioning Profile
+      env:
+        APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+        APPLE_DISTRIBUTION_PROFILE: ${{ secrets.APPLE_DISTRIBUTION_PROFILE }}
+      run: |
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        echo "$APPLE_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+        echo "$APPLE_DISTRIBUTION_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile2.mobileprovision
+
+    - name: List Installed Code Signing Identities
+      run: |
+        echo "Installed code signing identities:"
+        security find-identity -v -p codesigning
+
+    - name: Extract Certificate Thumbprints from Keychain
+      run: |
+        echo "Extracting SHA-1 thumbprints from keychain:"
+        security find-identity -v -p codesigning | grep -Eo '[A-F0-9]{40}' | while read thumb; do
+          echo "Keychain certificate thumbprint: $thumb"
+        done
+
+    - name: Extract Certificate Thumbprints from Provisioning Profile
+      run: |
+        echo "Extracting thumbprints from provisioning profile:"
+        # Decode the provisioning profile to plist
+        security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision -o profile.plist
+        # Extract the developer certificates and print their SHA-1 thumbprints
+        /usr/libexec/PlistBuddy -c "Print :DeveloperCertificates" profile.plist | grep -A1000 "Array" | grep -v "Array" | grep -v "Dict" | grep -v "}" | grep -v "{" | while read line; do
+          echo "$line" | base64 -D > cert.cer
+          thumbprint=$(openssl x509 -in cert.cer -inform DER -noout -fingerprint -sha1 | sed 's/://g' | awk -F'=' '{print $2}')
+          echo "Provisioning profile certificate thumbprint: $thumbprint"
+        done
+
+    - name: Cleanup
+      run: rm -f profile.plist cert.cer
