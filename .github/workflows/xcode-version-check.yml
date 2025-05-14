@@ -1,15 +1,12 @@
 name: Verify Xcode Version
 
 on:
-  workflow_dispatch: # Allows manual triggering of the workflow
+  workflow_dispatch:
 
 jobs:
   check-xcode-version:
-    runs-on: macos-15
+    runs-on: macos-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Check Xcode Version
-      run: xcodebuild -version
+      - name: Check Xcode Version
+        run: xcodebuild -version
