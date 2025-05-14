@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	
 
 	<PropertyGroup>
+		<CodesignKey>iPhone Distribution: Jose Berganza (7SLW466P76)</CodesignKey>
+		<ProvisioningProfile>58cae5c9-0b04-464c-a5af-a7231aa006b8</ProvisioningProfile>
 		 <CodesignEntitlements>Platforms/iOS/Entitlements.plist</CodesignEntitlements>
 		<!--<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>-->
 		<TargetFrameworks>net8.0-ios</TargetFrameworks>
