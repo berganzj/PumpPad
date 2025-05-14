@@ -1,4 +1,4 @@
-name: Verify Xcode Version
+name: Verify Xcode Versionq2
 
 on:
   workflow_dispatch:
