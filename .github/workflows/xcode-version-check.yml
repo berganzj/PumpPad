@@ -6,6 +6,6 @@ on:
 jobs:
   check-xcode-version:
     runs-on: macos-latest
-
+steps:
     - name: Check Xcode Version
       run: xcodebuild -version
