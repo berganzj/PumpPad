@@ -24,7 +24,7 @@ jobs:
       with:
         p12-file-base64: ${{ secrets.APPLE_MERGED_CERTIFICATE }}
         p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-        mobileprovision-base64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+        mobileprovision-base64: ${{ secrets.APPLE_DISTRIBUTION_PROFILE }}
 
     - name: Decode and Install Provisioning Profile
       env:
